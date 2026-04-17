@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Loader2, Send } from 'lucide-react';
 import api from '@/lib/api';
+import Link from 'next/link';
 
 function normalizeAssistantText(data) {
   if (!data) return 'No response received.';
@@ -86,12 +87,31 @@ export default function AssistantChat() {
                 >
                   <p className="whitespace-pre-wrap">{msg.text}</p>
                   {msg.role === 'assistant' && msg.items?.length > 0 && (
-                    <div className="mt-3 space-y-2">
-                      {msg.items.slice(0, 5).map((item, index) => (
-                        <div key={`${item._id || item.title || 'item'}-${index}`} className="rounded-xl border border-border/60 bg-background/70 px-3 py-2">
-                          <p className="font-semibold text-foreground text-xs truncate">{item.title || 'Recommended item'}</p>
-                          {item.price && <p className="text-[11px] text-muted-foreground">{item.price}</p>}
-                        </div>
+                    <div className="mt-4 grid gap-3 grid-cols-1 sm:grid-cols-2">
+                      {msg.items.slice(0, 6).map((item, index) => (
+                        <Link 
+                          key={`${item._id || item.title || 'item'}-${index}`} 
+                          href={`/products/${item._id}`}
+                          className="block group"
+                        >
+                          <div className="rounded-xl border border-border/60 bg-background/80 p-3 hover:bg-background transition-all duration-200 flex gap-3 items-center h-full shadow-sm hover:shadow-md hover:border-border">
+                            {item.images?.[0] ? (
+                              <img src={item.images[0]} alt={item.title || 'Product'} className="w-14 h-14 object-cover rounded-lg flex-shrink-0" />
+                            ) : (
+                              <div className="w-14 h-14 bg-muted rounded-lg flex-shrink-0 flex items-center justify-center">
+                                <span className="text-[10px] text-muted-foreground">No img</span>
+                              </div>
+                            )}
+                            <div className="overflow-hidden">
+                              <p className="font-semibold text-foreground text-sm truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{item.title || 'Recommended item'}</p>
+                              {(item.pricePerDay || item.price) && (
+                                <p className="text-xs text-muted-foreground mt-0.5">
+                                  ${item.pricePerDay || item.price}/day
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </Link>
                       ))}
                     </div>
                   )}
