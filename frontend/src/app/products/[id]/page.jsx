@@ -391,16 +391,15 @@ export default function ProductDetailsPage() {
 
         {similarItems.length > 0 && (
           <section className="mt-16 pt-12 border-t border-border">
-            <h2 className="text-xl font-black mb-6 text-foreground">Similar items powered by AI</h2>
+            <h2 className="text-xl font-black mb-6 text-foreground">Similar items</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {similarItems.map((item) => (
                 <ProductCard
                   key={item._id}
                   product={{
-                    _id: item._id,
-                    title: item.title,
-                    images: item.image ? [item.image] : [],
-                    pricePerDay: item.price,
+                    ...item,
+                    images: item.images || [item.image],
+                    pricePerDay: item.pricePerDay || item.price,
                     category: item.category || product.category,
                   }}
                 />
