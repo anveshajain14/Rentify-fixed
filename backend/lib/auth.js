@@ -4,10 +4,12 @@ import User from '../models/User.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const COOKIE_OPTS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/',
 };
@@ -43,5 +45,10 @@ export function setAuthCookie(res, token) {
 }
 
 export function removeAuthCookie(res) {
-  res.clearCookie('token', { path: '/' });
+  const isProduction = process.env.NODE_ENV === 'production';
+  res.clearCookie('token', {
+    path: '/',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+  });
 }
