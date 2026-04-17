@@ -28,7 +28,13 @@ const PORT = process.env.PORT || 5000;
 console.log("MONGO_URI:", process.env.MONGO_URI ? "Loaded ✅" : "Missing ❌");
 
 // ✅ CORS (safe fallback)
-app.use(cors(corsOptions || {}));
+export const corsOptions = {
+  origin: [
+    "https://rentify-fixed.onrender.com",
+    "https://rentify-fixed-6wro.vercel.app"
+  ],
+  credentials: true
+};
 
 // ✅ Stripe webhook (keep BEFORE express.json)
 app.post(
