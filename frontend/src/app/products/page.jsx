@@ -12,6 +12,7 @@ import ProductFilters from '@/components/ProductFilters';
 import { Search, Filter } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Suspense } from 'react';
 
 function applyFilters(products, filters, search) {
   let list = [...products];
@@ -51,7 +52,7 @@ function applyFilters(products, filters, search) {
 
 const CATEGORIES = ['All', 'Electronics', 'Furniture', 'Photography', 'Outdoor'];
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
@@ -173,5 +174,13 @@ export default function ProductsPage() {
 
       <Footer />
     </main>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center text-foreground">Loading products...</div>}>
+      <ProductsPageContent />
+    </Suspense>
   );
 }

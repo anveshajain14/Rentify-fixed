@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/slices/authSlice';
 import api, { apiBaseUrl } from '@/lib/api';
@@ -27,7 +27,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { isAdminRole, isSellerRole } from '@/lib/roles';
 
-export default function LoginPage() {
+function LoginPageContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -200,5 +200,13 @@ export default function LoginPage() {
       </div>
       <Footer />
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center text-foreground">Loading login...</div>}>
+      <LoginPageContent />
+    </Suspense>
   );
 }

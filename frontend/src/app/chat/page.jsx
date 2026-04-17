@@ -3,6 +3,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import UserChat from '@/components/chat/UserChat';
+import { Suspense } from 'react';
 
 export default function ChatPage() {
   return (
@@ -10,7 +11,9 @@ export default function ChatPage() {
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
-        <UserChat />
+        <Suspense fallback={<div className="text-muted-foreground">Loading chat...</div>}>
+          <UserChat />
+        </Suspense>
       </div>
 
       <Footer />

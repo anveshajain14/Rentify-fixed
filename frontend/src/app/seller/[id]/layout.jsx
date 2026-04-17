@@ -1,11 +1,14 @@
-const apiUrl =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
 
 export async function generateMetadata({ params }) {
+  if (!apiUrl) {
+    return { title: 'Seller | LuxeRent' };
+  }
+
   try {
     const resolvedParams = typeof params.then === 'function' ? await params : params;
     const { id } = resolvedParams;
-    const res = await fetch(`${apiUrl.replace(/\/$/, '')}/api/seller/${id}`, { next: { revalidate: 60 } });
+    const res = await fetch(`${apiUrl}/api/seller/${id}`, { next: { revalidate: 60 } });
     if (!res.ok) return { title: 'Seller | LuxeRent' };
     const data = await res.json();
     const seller = data.seller || {};

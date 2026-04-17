@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { Suspense, useState, useRef } from 'react';
 import api from '@/lib/api';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ import Footer from '@/components/Footer';
 
 const RESEND_COOLDOWN = 60;
 
-export default function VerifyEmailPage() {
+function VerifyEmailPageContent() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get('email') || '';
   const [email, setEmail] = useState(emailParam);
@@ -182,5 +182,13 @@ export default function VerifyEmailPage() {
       </div>
       <Footer />
     </main>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center text-foreground">Loading verification...</div>}>
+      <VerifyEmailPageContent />
+    </Suspense>
   );
 }

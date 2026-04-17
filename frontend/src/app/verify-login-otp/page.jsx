@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { Suspense, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/slices/authSlice';
 import api from '@/lib/api';
@@ -13,7 +13,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { isAdminRole, isSellerRole } from '@/lib/roles';
 
-export default function VerifyLoginOTPPage() {
+function VerifyLoginOTPPageContent() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get('email') || '';
   const [email, setEmail] = useState(emailParam);
@@ -150,5 +150,13 @@ export default function VerifyLoginOTPPage() {
       </div>
       <Footer />
     </main>
+  );
+}
+
+export default function VerifyLoginOTPPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center text-foreground">Loading verification...</div>}>
+      <VerifyLoginOTPPageContent />
+    </Suspense>
   );
 }

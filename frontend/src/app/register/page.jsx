@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import api, { apiBaseUrl } from '@/lib/api';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ const ERROR_MESSAGES = {
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-export default function RegisterPage() {
+function RegisterPageContent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -182,5 +182,13 @@ export default function RegisterPage() {
       </div>
       <Footer />
     </main>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center text-foreground">Loading registration...</div>}>
+      <RegisterPageContent />
+    </Suspense>
   );
 }
