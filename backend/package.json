@@ -1,0 +1,30 @@
+{
+  "name": "rentify-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.9.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "form-data": "^4.0.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.3",
+    "multer": "^2.0.2",
+    "nodemailer": "^8.0.4",
+    "pdfkit": "^0.15.0",
+    "razorpay": "^2.9.6",
+    "socket.io": "^4.8.3",
+    "stripe": "^20.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
