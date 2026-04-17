@@ -41,13 +41,24 @@ def chat(req: ChatRequest):
       "items": [...]
     }
     """
+    # intent = chatbot.detect_intent(req.query)
     intent = chatbot.detect_intent(req.query)
+
+    query_lower = req.query.lower()
+    if any(word in query_lower for word in ["suggest", "recommend", "show", "find"]):
+        intent = "ITEM"
 
     if intent == "ITEM":
         filters = chatbot.extract_item_filters(req.query)
+        filters["raw_query"] = req.query
         items = chatbot.find_items(filters)
         count = len(items) if isinstance(items, list) else 0
-        summary = f"{count} items found." if count else "No matching items."
+        # summary = f"{count} items found." if count else "No matching items."
+        summary = (
+            f"Here are {count} items you might like:"
+            if count
+            else "No matching items found. Try a different keyword."
+        )
         return {
             "text": summary,
             "items": items or [],
