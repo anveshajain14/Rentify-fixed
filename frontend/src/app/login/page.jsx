@@ -61,7 +61,7 @@ function LoginPageContent() {
       const r = res.data.user?.role;
       if (isAdminRole(r)) router.push('/admin');
       else if (isSellerRole(r)) router.push('/seller/dashboard');
-      else router.push('/discover');
+      else router.push('/');
     } catch (err) {
       const data = err.response?.data;
       if (data?.requiresVerification) {

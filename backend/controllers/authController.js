@@ -659,7 +659,7 @@ export async function googleAuthCallback(req, res) {
       metadata: { provider: 'google' },
     });
 
-    let redirectUrl = '/discover';
+    let redirectUrl = '/';
     if (isAdminRole(user.role)) redirectUrl = '/admin';
     else if (isSellerRole(user.role)) redirectUrl = '/seller/dashboard';
     res.clearCookie('google_oauth_state', { path: '/' });
