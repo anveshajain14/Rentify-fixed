@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { ShoppingCart, Trash2, Clock3, CheckCircle2, XCircle, IndianRupee } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import api from '@/lib/api';
 import OrderTimeline from '@/components/OrderTimeline';
@@ -29,7 +29,7 @@ function getTotalForItem(item) {
   return days * item.product.pricePerDay;
 }
 
-export default function CartPage() {
+function CartPageContent() {
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -284,5 +284,13 @@ export default function CartPage() {
 
       <Footer />
     </main>
+  );
+}
+
+export default function CartPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center text-foreground">Loading cart...</div>}>
+      <CartPageContent />
+    </Suspense>
   );
 }

@@ -27,8 +27,8 @@ const PORT = process.env.PORT || 5000;
 // 🔍 DEBUG ENV (remove later)
 console.log("MONGO_URI:", process.env.MONGO_URI ? "Loaded ✅" : "Missing ❌");
 
-// ✅ CORS (safe fallback)
-app.use(cors(corsOptions || {}));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // ✅ Stripe webhook (keep BEFORE express.json)
 app.post(
