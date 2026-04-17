@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 import { verifyToken } from './auth.js';
-import { allowedOrigins } from '../middleware/corsConfig.js';
+import { isOriginAllowed } from '../middleware/corsConfig.js';
 
 let ioInstance = null;
 const userSockets = new Map(); // userId -> Set<socketId>
@@ -39,7 +39,11 @@ export function initSocket(server) {
 
   ioInstance = new Server(server, {
     cors: {
-      origin: allowedOrigins,
+      origin: (origin, callback) => {
+        const allowed = isOriginAllowed(origin);
+        if (allowed) return callback(null, true);
+        return callback(new Error(`Socket CORS blocked for origin: ${origin || 'none'}`));
+      },
       credentials: true,
     },
   });
